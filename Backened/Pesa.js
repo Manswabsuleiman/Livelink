@@ -11,7 +11,7 @@ const app = express();
 // Allow frontend domains (local + deployed)
 const allowedOrigins = [
   "http://localhost:5173",                 // local dev frontend
-  //"https://pesapesa.onrender.com",        
+  "https://movieproject-ge4q.onrender.com" // LIVE FRONTENED URL        
 ];
 
 const corsOptions = {
@@ -39,7 +39,7 @@ const BASE_URL = "https://pay.pesapal.com/v3/api";
 const IPN_ID = "3db0823c-0eb7-4a4e-b477-db1e72aa1bb1";
 
 // Use your live Render backend URL for callback
-const LIVE_CALLBACK_URL = "https://proarmy-tammara-thermogenic.ngrok-free.dev/api/pesapal/ipn";
+const LIVE_CALLBACK_URL = "https://livelink-cu2l.onrender.com/api/pesapal/ipn";
 
 let accessToken = null;
 
@@ -181,3 +181,5 @@ app.listen(PORT, async () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   await getAccessToken();
 });
+
+//correct??
