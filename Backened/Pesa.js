@@ -17,7 +17,7 @@ const BACKEND_BASE_URL = "https://livelink-cu2l.onrender.com";
 // ----------------------
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://last-2uch.onrender.com", // ⬅️ Corrected LIVE FRONTEND URL
+  "https://coding-3bsz.onrender.com", // ⬅️ Corrected LIVE FRONTEND URL
   // "https://movieproject-ge4q.onrender.com" // You can include both if necessary, but use the one that's actively making the request
 ];
 
