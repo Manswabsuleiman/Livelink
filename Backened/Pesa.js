@@ -6,12 +6,19 @@ const crypto = require("crypto");
 const app = express();
 
 // ----------------------
-// CORS Configuration
+// Base Configuration
 // ----------------------
-// Allow frontend domains (local + deployed)
+const BACKEND_BASE_URL = "https://livelink-cu2l.onrender.com";
+
+// ----------------------
+// CORS Configuration 🟢 FIX APPLIED HERE
+// Ensure this list contains the exact origin of your deployed frontend
+// (Based on your initial error: 'https://last-2uch.onrender.com')
+// ----------------------
 const allowedOrigins = [
-  "http://localhost:5173",                 // local dev frontend
-  "https://movieproject-ge4q.onrender.com" // LIVE FRONTENED URL        
+  "http://localhost:5173",
+  "https://last-2uch.onrender.com", // ⬅️ Corrected LIVE FRONTEND URL
+  // "https://movieproject-ge4q.onrender.com" // You can include both if necessary, but use the one that's actively making the request
 ];
 
 const corsOptions = {
@@ -35,11 +42,11 @@ app.use(express.json());
 // ----------------------
 const PESAPAL_CONSUMER_KEY = "q+VgbmFWV80GUHw72+a5kPbhIYxoOV0X";
 const PESAPAL_CONSUMER_SECRET = "ckA8EE4abmKNsCgzhMY5QlOhoOI=";
-const BASE_URL = "https://pay.pesapal.com/v3/api";
+const PESAPAL_API_BASE_URL = "https://pay.pesapal.com/v3/api";
 const IPN_ID = "3db0823c-0eb7-4a4e-b477-db1e72aa1bb1";
 
-// Use your live Render backend URL for callback
-const LIVE_CALLBACK_URL = "https://livelink-cu2l.onrender.com/api/pesapal/ipn";
+// Use the dynamic BASE_URL and IPN route path
+const LIVE_CALLBACK_URL = `${BACKEND_BASE_URL}/api/pesapal/ipn`;
 
 let accessToken = null;
 
@@ -49,7 +56,7 @@ let accessToken = null;
 async function getAccessToken() {
   try {
     const response = await axios.post(
-      `${BASE_URL}/Auth/RequestToken`,
+      `${PESAPAL_API_BASE_URL}/Auth/RequestToken`,
       {
         consumer_key: PESAPAL_CONSUMER_KEY,
         consumer_secret: PESAPAL_CONSUMER_SECRET,
@@ -59,7 +66,7 @@ async function getAccessToken() {
 
     if (response.data?.token) {
       accessToken = response.data.token;
-      console.log("✅ PesaPal Access Token:", accessToken);
+      console.log("✅ PesaPal Access Token acquired.");
       return accessToken;
     } else {
       console.error("❌ Token not returned:", response.data);
@@ -123,7 +130,7 @@ app.post("/api/pesapal/order", async (req, res) => {
     console.log("📤 Sending order data:", orderData);
 
     const response = await axios.post(
-      `${BASE_URL}/Transactions/SubmitOrderRequest`,
+      `${PESAPAL_API_BASE_URL}/Transactions/SubmitOrderRequest`,
       orderData,
       {
         headers: {
@@ -181,5 +188,3 @@ app.listen(PORT, async () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   await getAccessToken();
 });
-
-//correct??
